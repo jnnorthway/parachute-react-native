@@ -1,45 +1,52 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
-import { NetworkInfo } from 'react-native-network-info';
 
-// import { contactHandler } from '../modules/ContactsHandler';
-import * as Contacts from 'expo-contacts';
+import ContactList from '../components/ContactList'
 
+import contactHandler from '../modules/ContactsHandler';
+
+import filePicker from '../modules/FileHandler'
 
 function Home(props) {
-  const [address, setAddress] = useState('')
   const [targetAddress, setTargetAddress] = useState('')
+  const [file, setFile] = useState({})
+  const [contactsMode, setContactsMode] = useState(false)
 
   function targetAddressHandler(enteredText) {
     setTargetAddress(enteredText)
   }
 
+  function selectFileHandler() {
+    console.log("SELECTING FILE!!!")
+    setFile(filePicker())
+    console.log(file)
+  }
+
+  function selectContact(contact) {
+    console.log(contact)
+    setContactsMode(false)
+  }
+
   function sendDataHandler() {
     console.log("SENDING DATA!!!")
-    getIP()
   }
 
-  async function getIP() {
-    NetworkInfo.getIPAddress().then(ipAddress => {
-      console.log(ipAddress);
-    })
+  function cancelContacts() {
+    setContactsMode(false)
   }
 
-
-  async function contactHandler() {
-    const { status } = await Contacts.requestPermissionsAsync();
-    const { data } = await Contacts.getContactsAsync();
-
-    if (data.length > 0) {
-      const contact = data[0];
-      console.log(contact);
-    }
+  function getContactsHandler() {
+    setContactsMode(true);
   }
 
   return (
     <View style={styles.screen}>
+      <ContactList
+        visible={contactsMode}
+        onSetContact={selectContact}
+        onCancel={cancelContacts} />
       <View style={styles.address}>
-        <Text style={styles.addressText}>Device Address: {address}</Text>
+        <Text style={styles.addressText}>Server Address:</Text>
       </View>
       <View>
         <TextInput
@@ -49,8 +56,13 @@ function Home(props) {
           onChangeText={targetAddressHandler}
           value={targetAddress} />
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={contactHandler} style={styles.button} >
+          <TouchableOpacity onPress={getContactsHandler} style={styles.button} >
             <Text style={styles.buttonText}>Contacts</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={selectFileHandler} style={styles.button} >
+            <Text style={styles.buttonText}>Select File</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.buttonContainer}>

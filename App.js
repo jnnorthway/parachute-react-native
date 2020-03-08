@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-// import * as Permissions from 'expo-permissions'
-
 import Header from './components/Header'
 import LoginPrompt from './screens/Login'
 import Home from './screens/Home'
+import getPermissions from './modules/PermissionHandler'
 
 // Main:
 export default function App() {
-  const [loggedIn, setLoggedIn] = useState(false)
+  // const [loggedIn, setLoggedIn] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(true)
 
   function loginHandler() {
     setLoggedIn(true)
@@ -20,6 +20,9 @@ export default function App() {
     setLoggedIn(false)
     console.log("logged out")
   }
+
+  // TODO: only run on app start
+  getPermissions()
 
   if(!loggedIn) {
     return (

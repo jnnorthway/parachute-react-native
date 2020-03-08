@@ -23,6 +23,21 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "intentFilters": [
+        {
+          "action": "SHARE",
+          "data": {
+            "scheme": "*/*",
+            "host": "*.expo.io"
+          },
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
+    },
     "ios": {
       "supportsTablet": true
     }

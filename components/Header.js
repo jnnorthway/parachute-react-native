@@ -5,10 +5,11 @@ function Header(props) {
  
   return (
     <View style={styles.header}>
+      <View style={styles.buttonContainer} />
       <View style={styles.title}>
         <Text style={styles.headerTitle}>{props.title}</Text>
       </View>
-      <View style={styles.buttonContainer}>
+      <View>
           <TouchableOpacity onPress={props.onLogout} style={styles.button} >
             <Text style={styles.buttonText}>Logout</Text>
           </TouchableOpacity>
@@ -21,7 +22,7 @@ function Header(props) {
 const styles = StyleSheet.create({
   header: {
     width: '100%',
-    paddingLeft: "15%",
+    paddingLeft: "20%",
     paddingRight: 10,
     height: 90,
     paddingTop: 25,
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonText: {
-    fontSize: 13,
+    fontSize: 15,
     color: '#fff',
     textAlign: 'center',
   },

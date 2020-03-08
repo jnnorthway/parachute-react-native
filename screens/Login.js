@@ -21,7 +21,6 @@ function loginPrompt(props) {
   function loginHandler() {
     var current_user = username.toLowerCase()
     if(current_user in users && password === users[current_user]) {
-      console.log("PASS")
       props.onLogin()
     }
     else {
@@ -39,13 +38,15 @@ function loginPrompt(props) {
           style={styles.input}
           placeholder='Username'
           onChangeText={usernameInputHandler}
-          value={username} />
+          value={username}
+          onSubmitEditing={loginHandler} />
         <TextInput
           secureTextEntry={true}
           style={styles.input}
           placeholder='Password'
           onChangeText={passwordInputHandler}
-          value={password} />
+          value={password}
+          onSubmitEditing={loginHandler} />
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={loginHandler} style={styles.button} >
             <Text style={styles.buttonText}>Login</Text>
