@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
-import {NetworkInfo} from 'react-native-network-info';
+import { NetworkInfo } from 'react-native-network-info';
+
+// import { contactHandler } from '../modules/ContactsHandler';
+import * as Contacts from 'expo-contacts';
+
 
 function Home(props) {
   const [address, setAddress] = useState('')
@@ -22,6 +26,16 @@ function Home(props) {
   }
 
 
+  async function contactHandler() {
+    const { status } = await Contacts.requestPermissionsAsync();
+    const { data } = await Contacts.getContactsAsync();
+
+    if (data.length > 0) {
+      const contact = data[0];
+      console.log(contact);
+    }
+  }
+
   return (
     <View style={styles.screen}>
       <View style={styles.address}>
@@ -34,6 +48,11 @@ function Home(props) {
           placeholder='Target IP Address'
           onChangeText={targetAddressHandler}
           value={targetAddress} />
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity onPress={contactHandler} style={styles.button} >
+            <Text style={styles.buttonText}>Contacts</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={sendDataHandler} style={styles.button} >
             <Text style={styles.buttonText}>Send Data</Text>
