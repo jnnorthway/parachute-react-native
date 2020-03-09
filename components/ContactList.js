@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
 import { View, Button, StyleSheet, Modal, FlatList } from 'react-native';
 
-import ContactItem from './ContactItem'
+import ContactItem from './ContactItem';
+import contactHandler, { getContact } from '../modules/ContactsHandler';
 
-import contactHandler from '../modules/ContactsHandler';
-
-function ContactList(props) {
-  const [contacts, setContacts] = useState([])
+export default function ContactList(props) {
+  const [contacts, setContacts] = useState([]);
 
   function cancelContactsList() {
-    props.onCancel()
+    props.onCancel();
   }
 
   async function getContactsHandler() {
-    var tmp = await contactHandler()
-    console.log(tmp)
-    setContacts(tmp)
+    var all_contacts = await contactHandler();
+    setContacts(all_contacts);
+  }
+
+  function setContact(selectedContactId) {
+    var contact = getContact(contacts, selectedContactId);
+    props.onSetContact(contact);
   }
 
   return (
@@ -28,7 +31,7 @@ function ContactList(props) {
         renderItem={itemData => (
         <ContactItem
           id={itemData.item.id}
-          onSetContact={props.onSetContact}
+          onSetContact={setContact}
           title={itemData.item.name} />
         )}>)}
       </FlatList>     
@@ -46,7 +49,7 @@ function ContactList(props) {
         </View>
       </View>
     </Modal>
-  )
+  );
 }
 
 
@@ -77,5 +80,3 @@ const styles = StyleSheet.create({
     backgroundColor: '#ccc'
   }
 });
-
-export default ContactList

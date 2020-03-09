@@ -6,23 +6,22 @@ import LoginPrompt from './screens/Login'
 import Home from './screens/Home'
 import getPermissions from './modules/PermissionHandler'
 
-// Main:
 export default function App() {
-  // const [loggedIn, setLoggedIn] = useState(false)
-  const [loggedIn, setLoggedIn] = useState(true)
+  // const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
 
   function loginHandler() {
-    setLoggedIn(true)
-    console.log("logged in")
+    setLoggedIn(true);
+    console.log("logged in");
   }
   
   function logoutHandler() {
-    setLoggedIn(false)
-    console.log("logged out")
+    setLoggedIn(false);
+    console.log("logged out");
   }
 
   // TODO: only run on app start
-  getPermissions()
+  getPermissions();
 
   if(!loggedIn) {
     return (
@@ -42,9 +41,7 @@ export default function App() {
       </View >
     );
   }
-  
 }
-
 
 // Styles:
 const styles = StyleSheet.create({

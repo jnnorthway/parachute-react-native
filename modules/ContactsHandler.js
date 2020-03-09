@@ -1,13 +1,13 @@
 import * as Contacts from 'expo-contacts';
 
 function getItem(contact, item) {
-  var items = []
+  var items = [];
   for (var i in contact) {
     items.push(
       contact[i][item]
     )
   }
-  return items
+  return items;
 }
 
 function filerContactInfo(contacts) {
@@ -20,11 +20,11 @@ function filerContactInfo(contacts) {
     };
     filteredContacts.push(contact);
   }
-  return filteredContacts
+  return filteredContacts;
 }
 
 function validContact(contact){
-  return true
+  return true;
 }
 
 function filerContacts(contacts) {
@@ -42,19 +42,26 @@ function filerContacts(contacts) {
       filteredContacts.push(contact);
     }
   }
-  console.log("NOT IMPLEMENTED")
-  return filteredContacts
+  console.log("NOT IMPLEMENTED");
+  return filteredContacts;
 }
 
-async function contactHandler() {
+export default async function contactHandler() {
   var { data } = await Contacts.getContactsAsync();
   // console.log(data)
-  var data = filerContactInfo(data);
+  data = filerContactInfo(data);
   data = filerContacts(data);
-  return data
+  return data;
 }
 
-export default contactHandler;
+export function getContact(contacts, id){
+  for (var i in contacts) {
+    if (contacts[i].id === id) {
+      return contacts[i];
+    }
+  }
+}
+
 
 /*
 Contact scheme:

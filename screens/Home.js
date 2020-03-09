@@ -1,38 +1,35 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
 
-import ContactList from '../components/ContactList'
+import ContactList from '../components/ContactList';
+import filePicker from '../modules/FileHandler';
 
-import contactHandler from '../modules/ContactsHandler';
-
-import filePicker from '../modules/FileHandler'
-
-function Home(props) {
-  const [targetAddress, setTargetAddress] = useState('')
-  const [file, setFile] = useState({})
-  const [contactsMode, setContactsMode] = useState(false)
+export default function Home(props) {
+  const [targetAddress, setTargetAddress] = useState('');
+  const [file, setFile] = useState({});
+  const [contactsMode, setContactsMode] = useState(false);
 
   function targetAddressHandler(enteredText) {
-    setTargetAddress(enteredText)
+    setTargetAddress(enteredText);
   }
 
   function selectFileHandler() {
-    console.log("SELECTING FILE!!!")
-    setFile(filePicker())
-    console.log(file)
+    console.log("SELECTING FILE!!!");
+    setFile(filePicker());
+    console.log(file);
   }
 
   function selectContact(contact) {
-    console.log(contact)
-    setContactsMode(false)
+    console.log(contact);
+    setContactsMode(false);
   }
 
   function sendDataHandler() {
-    console.log("SENDING DATA!!!")
+    console.log("SENDING DATA!!!");
   }
 
   function cancelContacts() {
-    setContactsMode(false)
+    setContactsMode(false);
   }
 
   function getContactsHandler() {
@@ -72,7 +69,7 @@ function Home(props) {
         </View>
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -113,5 +110,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 })
-
-export default Home

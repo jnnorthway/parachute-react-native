@@ -16,10 +16,8 @@ async function permissionHandler(request) {
   }
 }
 
-function getPermissions() {
+export default function getPermissions() {
   for (var permission in permissions) {
-    permissionHandler(permission)
+    permissionHandler(permission);
   }
 }
-
-export default getPermissions;

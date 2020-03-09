@@ -1,30 +1,30 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
 
-function loginPrompt(props) {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+export default function loginPrompt(props) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const users = {
     "jnorthway": "test123",
     "test": "Password",
-  }
+  };
 
   function usernameInputHandler(enteredText) {
-    setUsername(enteredText)
+    setUsername(enteredText);
   }
 
   function passwordInputHandler(enteredText) {
-    setPassword(enteredText)
+    setPassword(enteredText);
   }
 
   function loginHandler() {
     var current_user = username.toLowerCase()
     if(current_user in users && password === users[current_user]) {
-      props.onLogin()
+      props.onLogin();
     }
     else {
-      console.log("FAIL")
+      console.log("FAIL");
     }
   }
 
@@ -54,7 +54,7 @@ function loginPrompt(props) {
         </View>
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -95,5 +95,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 })
-
-export default loginPrompt

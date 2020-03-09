@@ -1,15 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-function ContactItem(props) {
-
+export default function ContactItem(props) {
   return (
     <TouchableOpacity onPress={props.onSetContact.bind(this, props.id)} >
       <View style={styles.listItem}>
         <Text>{props.title}</Text>
       </View>
     </TouchableOpacity>
-  )
+  );
 }
 
 // Styles:
@@ -22,5 +21,3 @@ const styles = StyleSheet.create({
     borderWidth: 1
   }
 });
-
-export default ContactItem
