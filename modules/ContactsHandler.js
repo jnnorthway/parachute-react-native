@@ -54,14 +54,6 @@ export default async function contactHandler() {
   return data;
 }
 
-export function getContact(contacts, id){
-  for (var i in contacts) {
-    if (contacts[i].id === id) {
-      return contacts[i];
-    }
-  }
-}
-
 
 /*
 Contact scheme:

@@ -1,33 +1,71 @@
 import React, { useState } from 'react';
-import { View, Button, StyleSheet, Modal, FlatList } from 'react-native';
+import { View, StyleSheet, Modal, FlatList, TouchableOpacity, Text } from 'react-native';
+import { SearchBar } from 'react-native-elements';
 
 import ContactItem from './ContactItem';
-import contactHandler, { getContact } from '../modules/ContactsHandler';
+import contactHandler from '../modules/ContactsHandler';
 
 export default function ContactList(props) {
-  const [contacts, setContacts] = useState([]);
+  const [contactsList, setContactsList] = useState([]);
+  const [listHolder, setListHolder] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [isFetching, setIsFetching] = useState(false);
 
   function cancelContactsList() {
+    cleanSearch()
     props.onCancel();
   }
 
-  async function getContactsHandler() {
-    var all_contacts = await contactHandler();
-    setContacts(all_contacts);
+  async function refresh() {
+    setIsFetching(true);
+    setSearchText("");
+    await getContactsHandler();
+    setIsFetching(false);
   }
 
-  function setContact(selectedContactId) {
-    var contact = getContact(contacts, selectedContactId);
-    props.onSetContact(contact);
+  async function getContactsHandler() {
+    var contacts = await contactHandler();
+    setContactsList(contacts);
+    setListHolder(contacts);
   }
+
+  function cleanSearch() {
+    setSearchText("");
+    setListHolder(contactsList)
+  }
+
+  function setContact(id) {
+    cleanSearch()
+    props.onSetContact(contactsList[id]);
+  }
+
+  function searchFilterFunction(text) {
+    setSearchText(text);
+    const newData = contactsList.filter(item => {
+      const itemData = `${item.name.toUpperCase()}`;
+      const textData = searchText.toUpperCase();
+      return itemData.indexOf(textData) > -1;
+    });
+    setListHolder(newData);  
+  };
 
   return (
     <Modal
       visible={props.visible}
       animationType="slide">
+      <View>
+        <SearchBar
+          placeholder="Type Here..."
+          value={searchText}
+          onChangeText={searchFilterFunction}
+          autoCorrect={false}
+        />
+      </View>
       <FlatList
         style={styles.scrollList}
-        data={contacts}
+        data={listHolder}
+        onRefresh={refresh}
+        refreshing={isFetching}
         renderItem={itemData => (
         <ContactItem
           id={itemData.item.id}
@@ -35,18 +73,10 @@ export default function ContactList(props) {
           title={itemData.item.name} />
         )}>)}
       </FlatList>     
-      <View style={styles.buttonContainer}>
-        <View style={styles.button}>
-          <Button
-            title='load'
-            onPress={getContactsHandler} />
-        </View>
-        <View style={styles.button}>
-          <Button
-            title='Cancel'
-            color='red'
-            onPress={cancelContactsList} />
-        </View>
+      <View>
+        <TouchableOpacity onPress={cancelContactsList} style={styles.TouchableOpacityStyle} >
+          <Text style={styles.buttonText}>Cancel</Text>
+        </TouchableOpacity>
       </View>
     </Modal>
   );
@@ -57,11 +87,6 @@ export default function ContactList(props) {
 const styles = StyleSheet.create({
   button: {
     width: '30%'
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '80%'
   },
   inputContainer: {
     flex: 1,
@@ -76,7 +101,23 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   scrollList: {
-    margin: 10,
-    backgroundColor: '#ccc'
+    borderTopWidth: 0, borderBottomWidth: 0,
+  },
+  buttonText: {
+    fontSize: 18,
+    color: '#fff',
+    textAlign: 'center',
+  },
+  TouchableOpacityStyle:{
+    position: 'absolute',
+    width: '40%',
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    bottom: 20,
+    backgroundColor: '#F03A47',
+    borderRadius: 100,
+    borderWidth: 1,
+    borderColor: '#fff'
   }
 });

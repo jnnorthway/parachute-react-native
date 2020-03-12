@@ -5,7 +5,7 @@ export default function ContactItem(props) {
   return (
     <TouchableOpacity onPress={props.onSetContact.bind(this, props.id)} >
       <View style={styles.listItem}>
-        <Text>{props.title}</Text>
+        <Text style={styles.text}>{props.title}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -15,9 +15,15 @@ export default function ContactItem(props) {
 const styles = StyleSheet.create({
   listItem: {
     padding: 10,
-    margin: 2,
+    margin: 1,
     backgroundColor: '#ffff',
-    borderColor: 'black',
-    borderWidth: 1
+    borderColor: 'grey',
+    borderBottomWidth: .5,
+    width: '100%'
+  },
+  text: {
+    fontSize: 16,
+    textAlign:'center',
+    alignSelf:'center'
   }
 });
