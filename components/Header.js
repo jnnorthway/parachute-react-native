@@ -1,31 +1,34 @@
-import React from 'react';
+import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-function Header(props) {
- 
-  return (
-    <View style={styles.header}>
-      <View style={styles.buttonContainer} />
-      <View style={styles.title}>
-        <Text style={styles.headerTitle}>{props.title}</Text>
-      </View>
-      <View>
-          <TouchableOpacity onPress={props.onLogout} style={styles.button} >
-            <Text style={styles.buttonText}>Logout</Text>
-          </TouchableOpacity>
-        </View>
+export default class Header extends Component {
+	constructor(props){
+		super(props);
+	}
+	render() {
+		return (
+			<View style={styles.header}>
+				<View style={styles.buttonContainer} />
+				<View style={styles.title}>
+					<Text style={styles.headerTitle}>{this.props.title}</Text>
+				</View>
+				<View>
+					<TouchableOpacity onPress={this.props.logout} style={styles.button} >
+						<Text style={styles.buttonText}>Logout</Text>
+					</TouchableOpacity>
+				</View>
     </View>
-  )
+		)
+	}
 }
-
 // Styles:
 const styles = StyleSheet.create({
   header: {
     width: '100%',
     paddingLeft: "20%",
     paddingRight: 10,
-    height: 90,
-    paddingTop: 25,
+    height: 110,
+    paddingTop: 40,
     backgroundColor: '#3D5A80',
     flexDirection: 'row',
     alignItems: 'center',
@@ -44,5 +47,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-export default Header

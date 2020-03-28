@@ -1,60 +1,78 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
+import React, { Component } from 'react'
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image } from 'react-native';
 
-export default function loginPrompt(props) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+const TEST_USERS = {
+	"jnorthway": "test123",
+	"test": "Password",
+};
 
-  const users = {
-    "jnorthway": "test123",
-    "test": "Password",
-  };
+export default class Login extends Component {
+	constructor(props){
+		super(props);
+		this.state = {
+			username : "",
+			password : "",
+			failedLogin: false
+		}
+		this.loginHandler = this.loginHandler.bind(this)
+	}
 
-  function usernameInputHandler(enteredText) {
-    setUsername(enteredText);
-  }
+	loginHandler = () => {
+		/* 
+			This is where checking a database would go, 
+		  hashing password before sending the username/password combo
+		*/
+		var username = this.state.username.toLowerCase()
+		console.log(this.state.username, this.state.password)
 
-  function passwordInputHandler(enteredText) {
-    setPassword(enteredText);
-  }
+		if(username in TEST_USERS){
+			if(this.state.password === TEST_USERS[username]){
+				this.props.login()
+			} 
+		}
+		this.setState({
+			failedLogin : true
+		})
+	}
 
-  function loginHandler() {
-    var current_user = username.toLowerCase()
-    if(current_user in users && password === users[current_user]) {
-      props.onLogin();
-    }
-    else {
-      console.log("FAIL");
-    }
-  }
-
-  return (
-    <View style={styles.screen}>
-      <View style={styles.login}>
-        <Text style={styles.loginText}>Login</Text>
+	render() {
+		return (
+			<View style={styles.screen}>
+      <View style={styles.titlelogo}>
+				<Image style={styles.logo} source={require("../assets/background.png")}></Image>
+        <Text style={styles.loginText}>Parachute</Text>
       </View>
-      <View>
+
+			{ this.state.failedLogin && 
+				<Text style={{color: 'red'}}>Username or password are incorrect.</Text>
+			}
+
+      <View style={styles.loginContainer}>
         <TextInput
-          style={styles.input}
-          placeholder='Username'
-          onChangeText={usernameInputHandler}
-          value={username}
-          onSubmitEditing={loginHandler} />
-        <TextInput
-          secureTextEntry={true}
-          style={styles.input}
-          placeholder='Password'
-          onChangeText={passwordInputHandler}
-          value={password}
-          onSubmitEditing={loginHandler} />
+           secureTextEntry={false}
+					 style={styles.input}
+					 placeholder='Username'
+					 onChangeText={(username)=>{this.setState({username})}}
+					 value={this.state.username}
+				/>
+
+				<TextInput
+           secureTextEntry={true}
+					 style={styles.input}
+					 placeholder='Password'
+					 onChangeText={(password)=>{this.setState({password})}}
+					 value={this.state.password}
+				/>
+
         <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={loginHandler} style={styles.button} >
+          <TouchableOpacity onPress={this.loginHandler} style={styles.button} >
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
         </View>
       </View>
     </View>
-  );
+		)
+	}
 }
 
 const styles = StyleSheet.create({
@@ -64,34 +82,52 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 20,
   },
-  login: {
-    padding: 30,
-    marginBottom: 40,
-  },
+  titlelogo: {
+		flex: 1,
+		top: 30
+	},
   loginText: {
-    color: '#187795',
-    fontSize: 35,
-  },
+		alignSelf: "center",
+		color: "white",
+		fontSize: 30,
+		top: 30,
+		flex: 1
+	},
+
   input: {
     borderBottomColor: "#D3D3D3",
     borderBottomWidth: 1,
     width: 300,
-    padding: 5,
-    marginBottom: 30
-  },
+		paddingTop: 5,
+		paddingBottom: 5,
+		paddingLeft: 5,
+		marginTop: 20,
+	},
+	
   button: {
-    marginTop: 30,
     paddingTop: 15,
     paddingBottom: 15,
     width: '100%',
     backgroundColor: '#3D5A80',
     borderRadius: 100,
     borderWidth: 1,
-    borderColor: '#fff'
+		borderColor: '#fff',
+		marginTop: 40,
   },
   buttonText: {
     fontSize: 18,
     color: '#fff',
     textAlign: 'center',
-  },
+	},
+	loginContainer:{
+		flex: 2,
+	},
+	logo: {
+		alignSelf: "center",
+		height: 150,
+		width: 400,
+		position: "absolute",
+		zIndex: -20,
+		flex: 1,
+	}
 })
