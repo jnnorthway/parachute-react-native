@@ -1,83 +1,92 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, TextInput } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, Modal } from 'react-native';
+import GradientButton from 'react-native-gradient-buttons';
 
 import ContactList from '../components/ContactList';
 import filePicker from '../modules/FileHandler';
 
-export default function Home(props) {
-  const [targetAddress, setTargetAddress] = useState('');
-  const [file, setFile] = useState({});
-  const [selectedContact, setSelectedContact] = useState({});
-  const [contactsMode, setContactsMode] = useState(false);
+export default class Home extends Component {
+	constructor(props) {
+		super(props)
+	
+		this.state = {
+			fileModalVisible: false
+		}
+	}
 
-  function targetAddressHandler(enteredText) {
-    setTargetAddress(enteredText);
-  }
+	render() {
+	
+		
+		return (
+		<View style={styles.screen}>
+			 <Modal
+        animationType="slide"
+        transparent={true}
+        visible={this.state.fileModalVisible}
+        onRequestClose={() => {
+					this.setState({fileModalVisible : !this.state.fileModalVisible})
+				}}
+				style={{padding: 50}}
+      >
+				<View>
+				<View style={{backgroundColor: "white", elevation:2, padding: 50, alignSelf: "center"}}>
+						<Text style={{color:"#000000", fontSize: 40, fontFamily:"serif", fontWeight: "bold"}}>Send<Text style={{color:"#0C536C"}}> File</Text></Text>
+				</View>
+				<View style={{flexDirection:"row", alignContent:"cneter"}}>
+				<GradientButton
+							textStyle={{ fontSize: 20 }}
+							gradientBegin="#187795"
+							gradientEnd="#002B3F"
+							gradientDirection="diagonal"
+							height={50}
+							width={150} 
+							radius={50}
+							impact
+							impactStyle='Light'
+							onPressAction = {()=>{this.setState({fileModalVisible : !this.state.fileModalVisible})}}
+						>
+							Close
+						</GradientButton>
+						<GradientButton
+							textStyle={{ fontSize: 20 }}
+							gradientBegin="#187795"
+							gradientEnd="#002B3F"
+							gradientDirection="diagonal"
+							height={50}
+							width={150} 
+							radius={50}
+							impact
+							impactStyle='Light'
+							onPressAction = {()=>{this.setState({fileModalVisible : !this.state.fileModalVisible})}}
+						>
+							Send
+						</GradientButton>
+				</View>
+				</View>
+			</Modal>
 
-  function selectContact(contact) {
-    console.log(contact);
-    setSelectedContact(contact);
-    setContactsMode(false);
-  }
-
-  function cancelContacts() {
-    setContactsMode(false);
-  }
-
-  function getContactsHandler() {
-    setContactsMode(true);
-  }
-
-  async function selectFileHandler() {
-    console.log("SELECTING FILE!!!");
-    var selectedFile = await filePicker()
-    setFile(selectedFile);
-    console.log(file);
-  }
-
-  function sendDataHandler() {
-    console.log("SENDING DATA!!!");
-  }
 
 
-  return (
-    <View style={styles.screen}>
-      <ContactList
-        visible={contactsMode}
-        onSetContact={selectContact}
-        onCancel={cancelContacts} />
-      <View style={styles.address}>
-        <Text style={styles.dataText}>Server Address:</Text>
-      </View>
-      <View>
-        <TextInput
-          style={styles.input}
-          keyboardType={"numeric"}
-          placeholder='Target IP Address'
-          onChangeText={targetAddressHandler}
-          value={targetAddress} />
-      </View>
-      <View stle={styles.dataContainer}>
-        <Text style={styles.dataText}>Send file to: {selectedContact.name}</Text>
-      </View>
-      <View stle={styles.dataContainer}>
-        <Text style={styles.dataText}>File: {file.name}</Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={getContactsHandler} style={styles.button} >
-          <Text style={styles.buttonText}>Contacts</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={selectFileHandler} style={styles.button} >
-          <Text style={styles.buttonText}>Select File</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={sendDataHandler} style={styles.button} >
-          <Text style={styles.buttonText}>Send Data</Text>
-        </TouchableOpacity>
-      </View>
+			<View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 16, alignItems:"center" }}>
+						<GradientButton
+							style={{position: "absolute", bottom: 0}}
+							textStyle={{ fontSize: 20 }}
+							gradientBegin="#187795"
+							gradientEnd="#002B3F"
+							gradientDirection="diagonal"
+							height={70}
+							width={350} 
+							radius={50}
+							impact
+							impactStyle='Light'
+							onPressAction = {()=>{this.setState({fileModalVisible : !this.state.fileModalVisible})}}
+						>
+							Send File
+						</GradientButton>
+        </View>
     </View>
-  );
+		)
+	}
 }
 
 const styles = StyleSheet.create({

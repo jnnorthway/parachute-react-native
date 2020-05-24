@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image } from 'react-native';
+import GradientButton from 'react-native-gradient-buttons';
 
 const TEST_USERS = {
 	"jnorthway": "test123",
-	"test": "Password",
+	"test": "password",
 };
 
 export default class Login extends Component {
@@ -15,8 +16,11 @@ export default class Login extends Component {
 			failedLogin: false
 		}
 		this.loginHandler = this.loginHandler.bind(this)
+		this.signup_navigator = this.signup_navigator.bind(this)
 	}
+	signup_navigator = () => {
 
+	}
 	loginHandler = () => {
 		/* 
 			This is where checking a database would go, 
@@ -38,9 +42,9 @@ export default class Login extends Component {
 	render() {
 		return (
 			<View style={styles.screen}>
-      <View style={styles.titlelogo}>
-				<Image style={styles.logo} source={require("../assets/background.png")}></Image>
-        <Text style={styles.loginText}>Parachute</Text>
+				
+      <View style={styles.titlelogo, {marginTop: 100, marginBottom: 100}}>
+        <Text style={{color:"#000000", fontSize: 50, fontFamily:"serif", fontWeight: "bold"}}>Para<Text style={{color:"#0C536C"}}>chute</Text></Text>
       </View>
 
 			{ this.state.failedLogin && 
@@ -64,11 +68,30 @@ export default class Login extends Component {
 					 value={this.state.password}
 				/>
 
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={this.loginHandler} style={styles.button} >
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
+        <View style={{alignSelf:"center"}}>
+						<GradientButton
+							style={{marginVertical: 8, elavation: 1, marginTop: 80}}
+							textStyle={{ fontSize: 20 }}
+							gradientBegin="#187795"
+							gradientEnd="#002B3F"
+							gradientDirection="diagonal"
+							height={70}
+							width={200} 
+							radius={50}
+							impact
+							impactStyle='Light'
+							onPressAction={this.loginHandler}
+						>
+							Login
+						</GradientButton>
         </View>
+
+				<View style={{flexDirection: "row", textAlign:"center", alignSelf:"center", marginTop: 40}}>
+					<Text style={{color:"#858585"}}>
+						Dont have an account?
+					</Text>
+					<Text color={{color:"#0C536C"}} onPress={this.signup_navigator}>Sign up!</Text>
+				</View>
       </View>
     </View>
 		)
@@ -101,7 +124,8 @@ const styles = StyleSheet.create({
 		paddingTop: 5,
 		paddingBottom: 5,
 		paddingLeft: 5,
-		marginTop: 20,
+		marginTop: 25,
+		marginBottom: 25,
 	},
 	
   button: {

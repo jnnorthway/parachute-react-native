@@ -4,13 +4,14 @@ import { StyleSheet, View, ActivityIndicator, Text } from 'react-native';
 import Header from './components/Header'
 import Login from './screens/Login'
 import Home from './screens/Home'
+import SignUp from './screens/SignUp'
 import getPermissions from './modules/PermissionHandler'
 
 export default class App extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			loggedIn : false,
+			loggedIn : true,
 			loading: false,
 		}
 		this.login = this.login.bind(this)
@@ -49,7 +50,9 @@ export default class App extends Component {
 		if(this.state.loading){
 			return(
 					<View style={styles.loadingscreen}>
-						<Text style={styles.title}>Parachute</Text>
+						<View style={styles.titlelogo, {marginTop: 120, marginBottom: 80}}>
+						<Text style={{color:"#000000", fontSize: 50, fontFamily:"serif", fontWeight: "bold"}}>Para<Text style={{color:"#0C536C"}}>chute</Text></Text>
+					</View>
 						<ActivityIndicator
 								animating={true}
 								color="#3D5A80"
@@ -63,6 +66,7 @@ export default class App extends Component {
 			<View style={styles.screen}>
 					<Login 
 						login={this.login} />
+						{/* <SignUp /> */}
 				</View >
 		)
 	}
